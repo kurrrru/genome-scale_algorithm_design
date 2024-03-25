@@ -37,7 +37,7 @@ void	protein_to_dna_sub(string protein, int pos, string dna, vector<string> &dna
 {
 	if (pos == protein.size())
 		return (dna_list.push_back(dna));
-	for (int i = 0; i < amino_to_dna[protein[pos]].size(); i++)
+	for (int i = 0; i < amino_to_dna.at(protein[pos]).size(); i++)
 		protein_to_dna_sub(protein, pos + 1, dna + amino_to_dna[protein[pos]][i], dna_list);
 }
 
