@@ -1,3 +1,7 @@
 # 実行ファイル
 *.out
 *.exe
+
+# サンプル
+*sample.txt
+*sample_gn.py
