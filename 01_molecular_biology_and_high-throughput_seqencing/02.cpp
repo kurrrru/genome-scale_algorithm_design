@@ -14,7 +14,7 @@ encodes that protein under such codon usage probabilities.
 
 using namespace std;
 
-map<char, vector<string> >	amino_to_dna = {
+map<char, vector<string> >	amino_to_codon = {
 	{'A', {"GCT", "GCC", "GCA", "GCG"}},
 	{'C', {"TGT", "TGC"}},
 	{'D', {"GAT", "GAC"}},
@@ -42,7 +42,7 @@ map<char, vector<string> >	amino_to_dna = {
 map<char, vector<double> >	normalize(map<string, double> &observed)
 {
 	map<char, vector<double> > probability;
-	for (auto dna: amino_to_dna)
+	for (auto dna: amino_to_codon)
 	{
 		if (dna.first == '>' || dna.first == '<')
 			continue;
@@ -57,7 +57,7 @@ map<char, vector<double> >	normalize(map<string, double> &observed)
 
 string	generate_dna(map<char, vector<double> > &probability, string protein)
 {
-	string dna = amino_to_dna['>'][0];
+	string dna = amino_to_codon['>'][0];
 	srand(time(NULL));
 	for (int i = 0; i < protein.size(); i++)
 	{
@@ -69,18 +69,18 @@ string	generate_dna(map<char, vector<double> > &probability, string protein)
 			sum += prob[j];
 			if (r < sum)
 			{
-				dna += amino_to_dna[protein[i]][j];
+				dna += amino_to_codon[protein[i]][j];
 				break;
 			}
 		}
 	}
 	double r = (double)rand() / RAND_MAX;
 	if (r < 1.0/3.0)
-		dna += amino_to_dna['<'][0];
+		dna += amino_to_codon['<'][0];
 	else if (r < 2.0/3.0)
-		dna += amino_to_dna['<'][1];
+		dna += amino_to_codon['<'][1];
 	else
-		dna += amino_to_dna['<'][2];
+		dna += amino_to_codon['<'][2];
 	return (dna);
 }
 
