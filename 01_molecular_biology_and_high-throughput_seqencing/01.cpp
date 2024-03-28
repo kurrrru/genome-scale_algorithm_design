@@ -8,7 +8,7 @@ list all the DNA sequences that encode a given protein sequence
 
 using namespace std;
 
-map<char, vector<string> >	amino_to_dna = {
+map<char, vector<string> >	amino_to_codon = {
 	{'A', {"GCT", "GCC", "GCA", "GCG"}},
 	{'C', {"TGT", "TGC"}},
 	{'D', {"GAT", "GAC"}},
@@ -37,8 +37,8 @@ void	protein_to_dna_sub(string protein, int pos, string dna, vector<string> &dna
 {
 	if (pos == protein.size())
 		return (dna_list.push_back(dna));
-	for (int i = 0; i < amino_to_dna.at(protein[pos]).size(); i++)
-		protein_to_dna_sub(protein, pos + 1, dna + amino_to_dna[protein[pos]][i], dna_list);
+	for (int i = 0; i < amino_to_codon.at(protein[pos]).size(); i++)
+		protein_to_dna_sub(protein, pos + 1, dna + amino_to_codon[protein[pos]][i], dna_list);
 }
 
 vector<string>	protein_to_dna(string protein)
