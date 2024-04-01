@@ -6,31 +6,31 @@ struct bit_field
 {
 	unsigned int	*A;
 	unsigned int	n;
-	unsigned int	k;
+	unsigned int	k; // number of bits per field
 	bit_field(unsigned n, unsigned k): n(n), k(k)
 	{
 		A = new unsigned[n * k / 32 + 1];
 	}
 	void	setField(unsigned i, unsigned x)
 	{
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < k; j++)
 		{
 			if (x & (1 << j))
 			{
-				A[(i * n + j) / 32] |= 1 << ((i * n + j) % 32);
+				A[(i * k + j) / 32] |= 1 << ((i * k + j) % 32);
 			}
 			else
 			{
-				A[(i * n + j) / 32] &= ~(1 << ((i * n + j) % 32));
+				A[(i * k + j) / 32] &= ~(1 << ((i * k + j) % 32));
 			}
 		}
 	}
 	unsigned int	getField(unsigned i)
 	{
 		unsigned int x = 0;
-		for (int j = 0; j < n; j++)
+		for (int j = 0; j < k; j++)
 		{
-			if (A[(i * n + j) / 32] & (1 << ((i * n + j) % 32)))
+			if (A[(i * k + j) / 32] & (1 << ((i * k + j) % 32)))
 			{
 				x |= 1 << j;
 			}
@@ -45,7 +45,7 @@ struct bit_field
 
 int	main(void)
 {
-	bit_field B(7, 4);
+	bit_field B(4, 7);
 	B.setField(0, 40);
 	B.setField(1, 25);
 	B.setField(2, 120);
