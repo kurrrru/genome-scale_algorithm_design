@@ -1,4 +1,4 @@
-#include <iostream>
+#pragma once
 #include <vector>
 #include <cassert>
 
@@ -21,6 +21,7 @@ private:
 	std::size_t					len;
 
 public:
+	s_bitvector(void) = default;
 	s_bitvector(std::size_t n)
 	{
 		len = n;
@@ -60,30 +61,3 @@ public:
 		return (sum[i >> 5] + popcount(bit[i >> 5] & ((1u << ((i + 1) & 0b11111)) - 1)));
 	}
 };
-
-int main(void)
-{
-	s_bitvector	bit(50);
-	// std::cout << "Hello, World!" << std::endl;
-	bit.set(0);
-	bit.set(1);
-	bit.set(3);
-	bit.set(4);
-	bit.set(6);
-	bit.set(9);
-	bit.set(40);
-	bit.build();
-	std::cout << bit.rank(0) << std::endl;
-	std::cout << bit.rank(1) << std::endl;
-	std::cout << bit.rank(2) << std::endl;
-	std::cout << bit.rank(3) << std::endl;
-	std::cout << bit.rank(4) << std::endl;
-	std::cout << bit.rank(5) << std::endl;
-	std::cout << bit.rank(6) << std::endl;
-	std::cout << bit.rank(7) << std::endl;
-	std::cout << bit.rank(8) << std::endl;
-	std::cout << bit.rank(9) << std::endl;
-	std::cout << bit.rank(39) << std::endl;
-	std::cout << bit.rank(40) << std::endl;
-	return (0);
-}
