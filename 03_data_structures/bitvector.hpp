@@ -17,7 +17,7 @@ struct	s_bitvector
 private:
 	std::vector<unsigned int>	bit;
 	std::vector<unsigned int>	sum;
-	std::size_t					size;
+	std::size_t					num_blocks;
 	std::size_t					len;
 
 public:
@@ -25,9 +25,9 @@ public:
 	s_bitvector(std::size_t n)
 	{
 		len = n;
-		size = (n + 0b11111) >> 5;
-		bit.assign(size, 0u);
-		sum.assign(size, 0u);
+		num_blocks = (n + 0b11111) >> 5;
+		bit.assign(num_blocks, 0u);
+		sum.assign(num_blocks, 0u);
 	}
 
 	void	set(std::size_t i)
@@ -51,13 +51,37 @@ public:
 	void	build(void)
 	{
 		sum[0] = 0;
-		for (std::size_t i = 1; i < size; i++)
+		for (std::size_t i = 1; i < num_blocks; i++)
 			sum[i] = sum[i - 1] +  popcount(bit[i - 1]);
 	}
 
+	// count the number of bits set in [0, i]
 	int	rank(std::size_t i)
 	{
 		assert(i < len);
 		return (sum[i >> 5] + popcount(bit[i >> 5] & ((1u << ((i + 1) & 0b11111)) - 1)));
+	}
+
+	int	rank(std::size_t i, bool b)
+	{
+		assert(i < len);
+		if (b)
+			return (rank(i));
+		return (i - rank(i) + 1);
+	}
+
+	// count the number of bits set in [l, r)
+	int	rank(std::size_t l, std::size_t r, bool b)
+	{
+		assert(l < r);
+		assert(r < len);
+		if (l == 0)
+			return (rank(r - 1, b));
+		return (rank(r - 1, b) - rank(l - 1, b));
+	}
+
+	int size(void)
+	{
+		return (len);
 	}
 };
