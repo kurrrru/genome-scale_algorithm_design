@@ -1,6 +1,6 @@
 #include <vector>
 
-void	topological_order_from_vertex(std::vector<std::vector<int> > edges, int v, std::vector<bool> &visited, std::vector<int> &order, std::vector<int> &indegree)
+void	shortest_path_dag_sub(std::vector<std::vector<int> > &edges, int v, std::vector<bool> &visited, std::vector<int> &order, std::vector<int> &indegree)
 {
 	int n = (int)edges.size();
 	visited[v] = true;
@@ -9,11 +9,11 @@ void	topological_order_from_vertex(std::vector<std::vector<int> > edges, int v, 
 	{
 		indegree[edges[v][i]]--;
 		if (indegree[edges[v][i]] == 0 && !visited[edges[v][i]])
-			topological_order_from_vertex(edges, edges[v][i], visited, order, indegree);
+			shortest_path_dag_sub(edges, edges[v][i], visited, order, indegree);
 	}
 }
 
-std::vector<int>	topological_order(std::vector<std::vector<int> > edges)
+std::vector<int>	shortest_path_dag(std::vector<std::vector<int> > &edges)
 {
 	int n = (int)edges.size();
 	std::vector<int> order;
@@ -24,7 +24,7 @@ std::vector<int>	topological_order(std::vector<std::vector<int> > edges)
 			indegree[edges[i][j]]++;
 	for (int i = 0; i < n; i++)
 		if (indegree[i] == 0 && !visited[i])
-			topological_order_from_vertex(edges, i, visited, order, indegree);
+			shortest_path_dag_sub(edges, i, visited, order, indegree);
 	return (order);
 }
 
@@ -39,7 +39,7 @@ int	main(void)
 		{},
 		{}
 	};
-	std::vector<int> order = topological_order(edges);
+	std::vector<int> order = shortest_path_dag(edges);
 	for (int i = 0; i < (int)order.size(); i++)
 		std::cout << order[i] << " ";
 	std::cout << std::endl;
